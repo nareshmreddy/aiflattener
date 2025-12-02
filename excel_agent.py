@@ -146,10 +146,22 @@ class ExcelAgent:
         dimensions = []
         metrics = []
         for col in block.columns:
-            try:
-                pd.to_numeric(block[col], errors='raise')
+            # Try to convert to numeric, turning errors into NaN
+            numeric_series = pd.to_numeric(block[col], errors='coerce')
+
+            # Calculate the ratio of valid numbers to total non-null values
+            non_null_count = block[col].count()
+            if non_null_count == 0:
+                dimensions.append(str(col))
+                continue
+
+            numeric_count = numeric_series.count()
+            ratio = numeric_count / non_null_count
+
+            # If more than 70% are numbers, treat as metric
+            if ratio > 0.7:
                 metrics.append(str(col))
-            except:
+            else:
                 dimensions.append(str(col))
 
         self.log("Column Analysis", f"Dimensions: {dimensions}, Metrics: {metrics}")
