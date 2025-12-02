@@ -1,9 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>First Web Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Excel Agent</title>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-  Hello World!
+    <div class="container">
+        <header>
+            <h1>Excel Data Harmonizer Agent</h1>
+            <p>Upload messy Excel files and watch the AI flatten and organize them.</p>
+        </header>
+
+        <main>
+            <div class="split-view">
+                <!-- Left Panel: Input & Config -->
+                <section class="panel input-panel">
+                    <div class="upload-zone" id="uploadZone">
+                        <input type="file" id="fileInput" accept=".xlsx, .xls" hidden>
+                        <div class="upload-content">
+                            <span class="icon">📂</span>
+                            <p>Drag & Drop Excel file here or <strong>Click to Browse</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Agent Instructions</h3>
+                        <textarea id="instructions" placeholder="E.g. 'Align Sales Value with Revenue', 'Ignore Sheet 3'..."></textarea>
+                    </div>
+
+                    <button id="runBtn" class="primary-btn" disabled>Run Agent</button>
+                </section>
+
+                <!-- Right Panel: Notebook / Steps -->
+                <section class="panel output-panel">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="steps">Agent Steps</button>
+                        <button class="tab-btn" data-tab="data" disabled id="dataTabBtn">Flattened Data</button>
+                    </div>
+
+                    <div id="steps" class="tab-content active">
+                        <div class="placeholder-text">Waiting for input...</div>
+                        <ul class="step-list" id="stepList">
+                            <!-- Steps will be injected here -->
+                        </ul>
+                    </div>
+
+                    <div id="data" class="tab-content">
+                        <div class="table-wrapper">
+                            <table id="dataTable">
+                                <thead></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="static/script.js"></script>
 </body>
 </html>

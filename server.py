@@ -3,10 +3,7 @@ import pandas as pd
 from excel_agent import ExcelAgent
 import os
 
-app = Flask(__name__, static_folder='static', template_folder='static')
-
-if not os.path.exists('static'):
-    os.makedirs('static')
+app = Flask(__name__, static_folder='static', template_folder='.')
 
 @app.route('/')
 def index():
