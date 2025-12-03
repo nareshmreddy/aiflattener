@@ -1,7 +1,11 @@
 from flask import Flask, request, jsonify, render_template
-import pandas as pd
-from excel_agent import ExcelAgent
 import os
+
+# Legacy imports (safeguarded)
+try:
+    from legacy.excel_agent import ExcelAgent
+except ImportError:
+    ExcelAgent = None
 
 app = Flask(__name__, static_folder='static', template_folder='.')
 
@@ -9,8 +13,12 @@ app = Flask(__name__, static_folder='static', template_folder='.')
 def index():
     return render_template('index.html')
 
+# Legacy Endpoint - Kept for reference but requires legacy module
 @app.route('/analyze', methods=['POST'])
 def analyze():
+    if not ExcelAgent:
+         return jsonify({"error": "Legacy backend disabled"}), 501
+
     if 'file' not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
 

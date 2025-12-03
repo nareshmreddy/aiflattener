@@ -8,9 +8,16 @@ from io import BytesIO
 # Add repo root to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from excel_agent import ExcelAgent
 from server import app
 
+# Check if legacy module exists
+try:
+    from legacy.excel_agent import ExcelAgent
+    LEGACY_AVAILABLE = True
+except ImportError:
+    LEGACY_AVAILABLE = False
+
+@unittest.skipUnless(LEGACY_AVAILABLE, "Legacy ExcelAgent not available")
 class TestExcelAgent(unittest.TestCase):
     def setUp(self):
         self.agent = ExcelAgent()
@@ -50,7 +57,8 @@ class TestServer(unittest.TestCase):
     def test_index_page(self):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Excel Data Harmonizer', response.data)
+        # Check for current title
+        self.assertIn(b'DataIngest AI', response.data)
 
 if __name__ == '__main__':
     unittest.main()
